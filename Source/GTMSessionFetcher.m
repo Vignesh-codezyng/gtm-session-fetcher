@@ -1696,13 +1696,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
 - (void)authorizeRequest:(NSMutableURLRequest *)request
                 delegate:(id)delegate
        didFinishSelector:(SEL)sel {
-    NSMethodSignature *sig = [delegate methodSignatureForSelector:sel];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-    [invocation setSelector:sel];
-    [invocation setTarget:delegate];
-    [invocation setArgument:(__bridge void *)(self) atIndex:2];
-    [invocation setArgument:&request atIndex:3];
-    [invocation invoke];
+    [self authorizer:self request:request finishedWithError:nil];
 }
 
 
