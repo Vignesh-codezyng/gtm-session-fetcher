@@ -1683,6 +1683,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
     SEL callbackSel = @selector(authorizer:request:finishedWithError:);
     NSMutableURLRequest *mutableRequest = [self.request mutableCopy];
     [authorizer authorizeRequest:mutableRequest delegate:self didFinishSelector:callbackSel];
+      [self authorizeRequest:mutableRequest delegate:self didFinishSelector:callbackSel];
   } else {
     GTMSESSION_ASSERT_DEBUG(authorizer == nil, @"invalid authorizer for fetch");
 
@@ -1691,6 +1692,13 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
     [self beginFetchMayDelay:NO mayAuthorize:NO mayDecorate:YES];
   }
 }
+
+- (void)authorizeRequest:(NSMutableURLRequest *)request
+                delegate:(id)delegate
+       didFinishSelector:(SEL)sel {
+    [self authorizer:self request:request finishedWithError:nil];
+}
+
 
 - (void)authorizer:(id<GTMFetcherAuthorizationProtocol>)auth
               request:(NSMutableURLRequest *)authorizedRequest
